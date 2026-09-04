@@ -33,19 +33,19 @@ they can be hidden or raced.
 
 ```mermaid
 flowchart LR
-    subgraph Kernel Space
+    subgraph kernel["Kernel Space"]
         A[execve] --> H[bpf/monitor.c]
         B[setresuid] --> H
         C[openat] --> H
         H --> R[(Ring Buffer)]
     end
-    subgraph User Space — privileged
-        R --> D[cmd/agent<br/>Go daemon]
+    subgraph agentspace["User Space - privileged"]
+        R --> D["cmd/agent<br/>Go daemon"]
         D -->|human-readable| L[console log]
         D -->|structured| J[alerts.jsonl]
     end
-    subgraph User Space — unprivileged
-        J --> W[cmd/dashboard<br/>Go HTTP server]
+    subgraph dashspace["User Space - unprivileged"]
+        J --> W["cmd/dashboard<br/>Go HTTP server"]
         W -->|poll every 2s| B2[Browser]
     end
 ```
